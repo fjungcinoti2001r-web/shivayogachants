@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>瑜伽唱诵索引</title>
+  <style>
+    :root {
+      --bg: #140c08;
+      --card: #24180f;
+      --gold: #c9a227;
+      --gold-soft: #e8d48b;
+      --cream: #f3e6c8;
+      --muted: #a89070;
+      --line: rgba(201,162,39,0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Songti SC", "Noto Serif SC", "Georgia", serif;
+      background: radial-gradient(ellipse at top, #2a1a0c 0%, var(--bg) 58%);
+      color: var(--cream);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 24px 16px 80px; }
+    header { text-align: center; padding: 12px 0 8px; }
+    .om { font-size: 28px; color: var(--gold); }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); color: var(--gold-soft); font-weight: 600; }
+    .sub { color: var(--muted); font-size: 0.95rem; }
+    .toolbar { display: flex; gap: 8px; margin: 18px 0 8px; position: sticky; top: 0; background: rgba(20,12,8,.92); padding: 8px 0; z-index: 5; }
+    input[type="search"] {
+      flex: 1; border-radius: 999px; border: 1px solid var(--line);
+      background: var(--card); color: var(--cream); padding: 10px 14px; font-size: 16px; outline: none;
+    }
+    .index-item {
+      display: block; width: 100%; text-align: left;
+      background: linear-gradient(180deg, #2a1c10, var(--card));
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px 18px; margin: 10px 0; color: inherit; cursor: pointer; font-family: inherit;
+    }
+    .index-item h2 { font-size: 1.15rem; color: var(--gold-soft); margin-bottom: 2px; }
+    .index-item p { color: var(--muted); font-size: 0.88rem; }
+    .back {
+      display: inline-block; color: var(--gold-soft); text-decoration: none;
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; margin-bottom: 14px;
+    }
+    video, audio { width: 100%; display: block; }
+    video { border-radius: 12px; background: #000; max-height: 68vh; }
+    audio { margin: 10px 0 16px; }
+    .card {
+      background: linear-gradient(180deg, #2a1c10, var(--card));
+      border: 1px solid var(--line); border-radius: 18px; padding: 16px;
+    }
+    .label { margin-top: 14px; color: var(--gold); font-size: 0.78rem; letter-spacing: .12em; }
+    .line { padding: 8px 0; border-bottom: 1px dashed rgba(201,162,39,.12); }
+    .sa { font-size: 1.18rem; color: var(--gold-soft); }
+    .zh { font-size: 0.95rem; }
+    button.copy {
+      margin-top: 14px; background: #3a2814; color: var(--gold-soft);
+      border: 1px solid var(--gold); border-radius: 999px; padding: 8px 14px;
+      font-family: inherit; cursor: pointer;
+    }
+    .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 28px; }
+    code { color: var(--gold-soft); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="om">ॐ</div>
+      <h1>瑜伽唱诵索引</h1>
+      <p class="sub">点标题进入 · 视频 + 音频 + 经文</p>
+    </header>
+    <div id="app"></div>
+    <footer>
+      以后加新唱诵：打开本文件，在 CHANTS 数组里按同样格式追加一条，并把 mp4 / mp3 放进同一文件夹。
+    </footer>
+  </div>
+<script>
+const CHANTS = [
+  {
+    id: "om-sakthi",
+    title: "Om Sakthi",
+    subtitle: "开课 / 力量祈请 · 约 2:30",
+    tags: "开课 om sakthi 力量",
+    video: "om-sakthi.mp4",
+    audio: "om-sakthi.mp3",
+    lyrics: [
+      { sa: "Om Sakthi", zh: "唵  沙克蒂（神圣力量）" },
+      { sa: "Om Sakthi  Om Sakthi  Om Sakthi", zh: "可随视频反复唱诵" }
+    ]
+  },
+  {
+    id: "pancakosa",
+    title: "Pañcakośa  五鞘",
+    subtitle: "通往内在自我 · 约 1:37",
+    tags: "五鞘 panchakosha 开课 梵 湿婆",
+    video: "pancakosa.mp4",
+    audio: "pancakosa.mp3",
+    lyrics: [
+      { label: "开场" },
+      { sa: "Om … Om … Om …", zh: "唵 ……" },
+      { label: "Annamaya Kośa · 食所成鞘" },
+      { sa: "Annamaya Kośa …", zh: "食所成身……" },
+      { sa: "Deho'ham na …", zh: "我不是这个身体……", en: "I am not the body" },
+      { sa: "Śuddho'ham …", zh: "我是清净的……" },
+      { label: "Prāṇamaya Kośa · 气所成鞘" },
+      { sa: "Prāṇamaya Kośa …", zh: "气所成身……" },
+      { sa: "Prāṇo'ham na …", zh: "我不是这口气息……" },
+      { sa: "Śuddho'ham …", zh: "我是清净的……" },
+      { label: "Manomaya Kośa · 意所成鞘" },
+      { sa: "Manomaya Kośa …", zh: "意所成身……" },
+      { sa: "Mano'ham na …", zh: "我不是这个心……" },
+      { sa: "Śānto'ham …", zh: "我是寂静的……" },
+      { label: "Vijñānamaya Kośa · 智所成鞘" },
+      { sa: "Vijñānamaya Kośa …", zh: "智所成身……" },
+      { sa: "Buddhir aham na …", zh: "我不是这个理智……" },
+      { sa: "Sākṣī'ham …", zh: "我是见证者……" },
+      { label: "超越" },
+      { sa: "Beyond the body …", zh: "超越身体……" },
+      { sa: "Beyond the breath …", zh: "超越气息……" },
+      { sa: "Beyond the mind …", zh: "超越心念……" },
+      { sa: "Beyond knowledge …", zh: "超越知识……" },
+      { sa: "Beyond all coverings …", zh: "超越一切遮蔽……" },
+      { label: "收摄" },
+      { sa: "Aham Brahmāsmi …", zh: "我即梵……" },
+      { sa: "Sat … Cit … Ānanda …", zh: "存在 · 意识 · 极乐……" },
+      { sa: "Śivo'ham … Śivo'ham … Śivo'ham …", zh: "我即湿婆……" }
+    ]
+  },
+  {
+    id: "compassion-wisdom",
+    title: "慈悲与智慧",
+    subtitle: "中文唱诵 · 约 4:02",
+    tags: "慈悲 智慧 结束 常用 中文",
+    video: "compassion-wisdom.mp4",
+    audio: "compassion-wisdom.mp3",
+    lyrics: [
+      { label: "前奏" },
+      { sa: "只有慈悲，真的够吗？", zh: "" },
+      { label: "副歌" },
+      { sa: "没有智慧的慈悲，有时也会留下伤痛", zh: "" },
+      { sa: "温柔而清醒……", zh: "" },
+      { sa: "（完整歌词可按视频再补）", zh: "打开本文件，在 CHANTS 里改 lyrics" }
+    ]
+  }
+];
+
+const app = document.getElementById("app");
+function currentId() { return location.hash.replace(/^#\/?/, "") || ""; }
+
+function render() {
+  const chant = CHANTS.find(c => c.id === currentId());
+  if (chant) renderDetail(chant);
+  else renderIndex();
+}
+
+function renderIndex() {
+  app.innerHTML = '<div class="toolbar"><input id="q" type="search" placeholder="搜索标题或经文…" /></div><div id="list"></div>';
+  const list = document.getElementById("list");
+  const draw = () => {
+    const q = document.getElementById("q").value.trim().toLowerCase();
+    const items = CHANTS.filter(c => {
+      const blob = (c.title + " " + c.subtitle + " " + c.tags + " " + JSON.stringify(c.lyrics)).toLowerCase();
+      return !q || blob.includes(q);
+    });
+    list.innerHTML = items.length ? items.map(c =>
+      '<button class="index-item" data-id="' + c.id + '"><h2>' + c.title + "</h2><p>" + c.subtitle + "</p></button>"
+    ).join("") : '<p class="empty">没有找到对应唱诵</p>';
+    list.querySelectorAll(".index-item").forEach(btn => {
+      btn.onclick = () => { location.hash = btn.dataset.id; };
+    });
+  };
+  document.getElementById("q").addEventListener("input", draw);
+  draw();
+}
+
+function renderDetail(c) {
+  const lines = c.lyrics.map(l => {
+    if (l.label) return '<div class="label">' + l.label + "</div>";
+    return '<div class="line"><div class="sa">' + (l.sa || "") + "</div>" +
+      (l.zh ? '<div class="zh">' + l.zh + "</div>" : "") +
+      (l.en ? '<div class="sub">' + l.en + "</div>" : "") + "</div>";
+  }).join("");
+  app.innerHTML =
+    '<a class="back" href="#">← 返回索引</a><div class="card">' +
+    '<h1 style="font-size:1.4rem;margin-bottom:4px">' + c.title + "</h1>" +
+    '<p class="sub">' + c.subtitle + "</p>" +
+    '<video controls playsinline preload="metadata"><source src="' + c.video + '" type="video/mp4" /></video>' +
+    '<p class="sub" style="margin-top:8px">只听音频</p>' +
+    '<audio controls preload="metadata"><source src="' + c.audio + '" type="audio/mpeg" /></audio>' +
+    lines +
+    '<button class="copy" type="button">复制经文</button></div>';
+  app.querySelector(".copy").onclick = function () {
+    const text = c.lyrics.filter(l => l.sa).map(l => [l.sa, l.zh, l.en].filter(Boolean).join("\n")).join("\n\n");
+    navigator.clipboard.writeText(text).then(() => {
+      this.textContent = "已复制";
+      setTimeout(() => this.textContent = "复制经文", 1200);
+    });
+  };
+}
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>
